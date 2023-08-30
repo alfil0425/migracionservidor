@@ -11,8 +11,6 @@ const task = [
     },
 ];
 
-/*app.get( '/task', (req, res) => {
-    res.json(task);
-});*/
+
 
 module.exports.task = task
