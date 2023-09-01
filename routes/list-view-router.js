@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {task} = require('./task.js');
+const task = require('../task.js');
 
 router.get('/completed', (req, res) => {
     const completedTask = task.filter((task) => task.isCompleted === true);

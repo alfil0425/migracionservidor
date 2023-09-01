@@ -2,13 +2,16 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser'); 
+const cors = require ('cors');
 
-const { task } = require('./task.js');
-const listViewRouter = require('./routers/list-view-router');
-const listEditRouter = require('./routers/list-edit-router');
-
+const task  = require('./task.js');
+const listViewRouter = require('./routes/list-view-router.js');
+const listEditRouter = require('./routes/list-edit-router.js');
+app.use (cors());
 app.use(bodyParser.json()); 
-
+app.get('/task', (req, res)=> {
+    res.json({task});
+    });
 app.use('/list-view', listViewRouter); 
 app.use('/list-edit', listEditRouter); 
 
@@ -22,6 +25,4 @@ app.listen(PORT, () => {
 
 
 
-/*app.get('/task', (req, res)=> {
-    res.json({user:'task'});
-    });*/
+
