@@ -1,17 +1,28 @@
 
 const express = require('express');
-const app = express();
-const bodyParser = require('body-parser'); 
+const router = require("./login")
 const cors = require ('cors');
-
+const jwt = require("jsonwebtoken")
 const task  = require('./task.js');
 const listViewRouter = require('./routes/list-view-router.js');
 const listEditRouter = require('./routes/list-edit-router.js');
+const app = express();
+
+
+
+
+
 app.use (cors());
-app.use(bodyParser.json()); 
+app.use(express.json()); 
 app.get('/task', (req, res)=> {
     res.json({task});
     });
+app.use(express.json())
+
+
+
+
+app.use('/login', router)
 app.use('/list-view', listViewRouter); 
 app.use('/list-edit', listEditRouter); 
 
