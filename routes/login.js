@@ -1,4 +1,4 @@
-/*const express = require("express");
+const express = require("express");
 const jwt = require("jsonwebtoken");
 const authJWT = require("../Middleware/verificacion");
 const router = express.Router();
@@ -41,6 +41,6 @@ console.log(token);
     console.log("error: >>", error);
     res.status(500).send("token invalido");
   }*/
-/*});
+});
 
-module.exports = router;*/
+module.exports = router;
