@@ -1,13 +1,12 @@
 /*const express = require("express");
 const jwt = require("jsonwebtoken");
+const authJWT = require("../Middleware/verificacion");
 const router = express.Router();
 
 const users = {
   user: "mauricio",
   password: 123456,
 };
-
-const KEY = "LUMINECHANDIS";
 
 router.post("/", (req, res) => {
   const { user, password } = req.body;
@@ -23,14 +22,16 @@ router.post("/", (req, res) => {
 
     console.log(token);
 
-    return res.status(200).send({token});
+    return res.status(200).send({ token });
   } else {
     return res.status(400).send("Usuario o contraseña erronea");
   }
 });
 
-router.get("/users", (req, res) => {
-  try {
+router.get("/users", authJWT, (req, res) => {
+  const data = req.data;
+  res.send(data);
+  /*try {
     const token = req.headers.authorization;
 console.log(token);
     const verify = jwt.verify(token, KEY);
@@ -39,7 +40,7 @@ console.log(token);
   } catch (error) {
     console.log("error: >>", error);
     res.status(500).send("token invalido");
-  }
-});
+  }*/
+/*});
 
 module.exports = router;*/

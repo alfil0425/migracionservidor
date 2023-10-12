@@ -1,35 +1,36 @@
-const express = require ('express');
+const express = require("express");
 const router = express.Router();
-const task = require('../task.js');
+const tasks = require("../data/tasks");
 
-router.post('/', (req, res)=> {
-    const newTask = req.body;
-    task.push(newTask);
-    res.json({ message : 'Tarea Creada'});
-});
-
-router.delete('/:taskId', (req, res)=>{
-    const taskId = parseInt (req.params.taskId);
-    const index = task.findIndex((task) => task.id === taskId);
-    
-    if (index !== -1) {
-        task.splice (index, 1);
-        res.json({message: 'Tarea Eliminada'});
-    } else {
-        res.status(404).json({message: 'Tarea no encontrada'});
+function validateData(req, res, next){
+  const {id, name, description, isCompleted} = req.body;
+  if (req.method === "POST" || req.method === "PUT") {
+    if (!id || !name || !description || typeof isCompleted !== "boolean") {
+      return res.status(400).json({ error: "datos de tarea invalidos" });
     }
+  } 
+  next();
+};
+
+router.post("/create", validateData, (req, res) => {
+  const newTask = req.body;
+  tasks.push(newTask);
+  res.status(201).json(newTask);
 });
 
-router.put('/:taskId',(req, res) => {
-    const taskId= parseInt (req.params.taskId);
-    const updatedTask = req.body;
-    const index = task.findIndex ((task) => task.id===taskId );
+router.delete("/delete/:taskId", (req, res) => {
+  const taskId = req.params.taskId;
+  const index = tasks.findIndex(task => task.id !== taskId);
+  tasks.splice(index, 1);
+  res.json({mensaje: `Tarea con Id ${taskId} eliminada`});
+});
 
-    if (index !== -1) {
-        task[index] = updatedTask;
-        res.json({message: 'Tarea Actualizada'});
-    } else { res.status (404).json({message: 'Tarea no encontrada'});
-}
+router.put("/update/:taskId",validateData, (req, res) => {
+  const taskId = req.params.taskId;
+  const updatedTask = req.body;
+  const index = tasks.findIndex(task => (task.id == taskId));
+  tasks[index]=updatedTask;
+  res.json(updatedTask);
 });
 
 module.exports = router;
